@@ -1,5 +1,5 @@
 import type {NextPage} from "next";
-import {Head} from "@/src/utils/head";
+import {Head} from "@/src/client/utils/head";
 import {UserButton, UserProfile} from "@clerk/nextjs";
 
 const Home: NextPage = () => {
