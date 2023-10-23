@@ -17,6 +17,7 @@
         "react-dom": "^18",
         "@types/node": "^20",
         "@nextui-org/react": "latest",
+        "mysql2": "^3.6.1",
         "@types/react": "latest",
         "@types/react-dom": "latest",
         "next-themes": "latest",
