@@ -1,4 +1,4 @@
-import SqlApi from "@/src/server/sql/SqlApi";
+import SqlApi from "@/src/functions/server/sql/SqlApi";
 import * as mysql from "mysql2/promise";
 import {Connection} from "mysql2/promise";
 

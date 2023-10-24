@@ -1,5 +1,5 @@
 import type {NextApiRequest, NextApiResponse} from 'next'
-import SqlApi from "@/src/server/sql/SqlApi";
+import SqlApi from "@/src/functions/server/sql/SqlApi";
 
 type Data = {
     time: string
