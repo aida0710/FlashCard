@@ -15,9 +15,7 @@ function MyApp({Component, pageProps}: AppProps) {
                 defaultTheme="black"
                 enableSystem
                 disableTransitionOnChange>
-                <Layout >
-                    <Component {...pageProps} />
-                </Layout>
+                <Component {...pageProps} />
             </ThemeProvider>
         </ClerkProvider>
     );
