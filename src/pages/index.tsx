@@ -10,6 +10,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/src/components/ui/dropdown-menu";
+import {AppearanceForm} from "@/src/components/appearance-form";
 
 const Home: NextPage = () => {
 
@@ -42,6 +43,7 @@ const Home: NextPage = () => {
                     </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
+            <AppearanceForm />
         </div>
     )
 };

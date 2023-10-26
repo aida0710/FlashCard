@@ -4,6 +4,7 @@ import {ClerkProvider} from "@clerk/nextjs";
 import {dark} from '@clerk/themes';
 import {ThemeProvider} from "@/src/components/theme-provider";
 import '@/src/globals.css'
+import {Layout} from "@/src/components/layout/layout";
 
 function MyApp({Component, pageProps}: AppProps) {
 
@@ -11,10 +12,12 @@ function MyApp({Component, pageProps}: AppProps) {
         <ClerkProvider appearance={{baseTheme: dark}} {...pageProps}>
             <ThemeProvider
                 attribute="class"
-                defaultTheme="system"
+                defaultTheme="black"
                 enableSystem
                 disableTransitionOnChange>
-                <Component {...pageProps} />
+                <Layout >
+                    <Component {...pageProps} />
+                </Layout>
             </ThemeProvider>
         </ClerkProvider>
     );
