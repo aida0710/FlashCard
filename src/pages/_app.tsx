@@ -12,10 +12,12 @@ function MyApp({Component, pageProps}: AppProps) {
         <ClerkProvider appearance={{baseTheme: dark}} {...pageProps}>
             <ThemeProvider
                 attribute="class"
-                defaultTheme="black"
+                defaultTheme="system"
                 enableSystem
                 disableTransitionOnChange>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </ThemeProvider>
         </ClerkProvider>
     );
