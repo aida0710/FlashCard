@@ -9,7 +9,11 @@ export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) {
-    SqlApi.getInstance().connect().insert("INSERT INTO `test` (`id`, `name`) VALUES (NULL, 'test');").then();
+    console.time()
+    for (let i = 0; i < 10000; i++){
+        SqlApi.getInstance().connect().insert("INSERT INTO `test` (`id`, `test`) VALUES (NULL, 'test');").then();
+    }
+    console.timeEnd()
     res.status(200).json({
         time: Date.now().toString()
     })

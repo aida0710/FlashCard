@@ -12,8 +12,8 @@ import {UserAvatar} from "@/src/components/layout/user-avatar";
 import React from "react";
 
 export function Menu() {
-    return (
 
+    return (
         <Menubar className="rounded-none h-16 z-20 sticky top-0 border-b-[1]">
             <div className="flex flex-row w-full">
                 <div className="basis-3/4 w-auto">
@@ -37,7 +37,7 @@ export function Menu() {
                     </div>
                 </div>
                 <div className="basis-1/4 flex justify-end">
-                    <div className="m-1 mr-4 md:mt-3.5">
+                    <div className="m-1 mr-6 max-md:mt-2 md:mt-3.5">
                         <UserAvatar/>
                     </div>
                 </div>

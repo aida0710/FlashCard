@@ -3,17 +3,17 @@
 import {Button} from "@/src/components/ui/button";
 import {Sheet, SheetContent, SheetHeader, SheetTrigger} from "@/src/components/ui/sheet";
 import React from "react";
-import {MenuIcon} from "lucide-react";
 import {ScrollArea} from "@/src/components/ui/scroll-area";
 import {Separator} from "@/src/components/ui/separator";
+import {ProjectIcon} from "@/src/components/icons/project-icon";
 
 export function MobileSidebar() {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                    <MenuIcon/>
-                </Button>
+                <div className="bg-teal-800 h-full w-12">
+                    <ProjectIcon/>
+                </div>
             </SheetTrigger>
             <SheetContent side='left' className="md:hidden">
                 <SheetHeader className="mb-0">

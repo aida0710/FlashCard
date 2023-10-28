@@ -6,7 +6,6 @@ export default class Query {
     private static connection: Promise<mysql.Connection> | undefined;
 
     private connectionCheck(): Promise<mysql.Connection> {
-        console.info("connectionCheck");
         if (!Query.connection) {
             console.info("connectionがundefinedの為、接続します。");
             Query.connection = SqlApi.getInstance().createConnection();
@@ -17,9 +16,7 @@ export default class Query {
 
     private async execute(query: string): Promise<any> {
         const connection: Connection = await this.connectionCheck().then();
-        let rows: any;
-        rows = await connection.query(query);
-        return rows;
+        return connection.query(query);
     }
 
     public async insert(query: string): Promise<any> {
