@@ -16,6 +16,9 @@ module.exports = withPWA(
                 'images.unsplash.com',
                 'wfiot2018.iot.ieee.org',
             ],
-        }
+        },
+        experimental: {
+            serverActions: true,
+        },
     }
 );

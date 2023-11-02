@@ -1,3 +1,4 @@
+import 'server-only';
 import * as mysql from "mysql2/promise";
 import Query from "./Query";
 
