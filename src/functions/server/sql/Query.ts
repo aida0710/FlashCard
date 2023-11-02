@@ -1,4 +1,3 @@
-import 'server-only';
 import SqlApi from "@/src/functions/server/sql/SqlApi";
 import * as mysql from "mysql2/promise";
 import {Connection} from "mysql2/promise";
@@ -15,28 +14,29 @@ export default class Query {
         return Query.connection;
     }
 
-    private async execute(query: string): Promise<any> {
+    private async execute(query: string, variables: string[]): Promise<any> {
         const connection: Connection = await this.connectionCheck().then();
-        return connection.query(query);
+        const safeVariables: string[] = variables.map((variable: string) => connection.escape(variable))
+        return connection.query(query, safeVariables);
     }
 
-    public async insert(query: string): Promise<any> {
-        return await this.execute(query);
+    public async insert(query: string, variables: string[]): Promise<any> {
+        return await this.execute(query, variables);
     }
 
-    public async select(query: string): Promise<any> {
-        return await this.execute(query);
+    public async select(query: string, variables: string[]): Promise<any> {
+        return await this.execute(query, variables);
     }
 
-    public async update(query: string): Promise<any> {
-        return await this.execute(query);
+    public async update(query: string, variables: string[]): Promise<any> {
+        return await this.execute(query, variables);
     }
 
-    public async delete(query: string): Promise<any> {
-        return await this.execute(query);
+    public async delete(query: string, variables: string[]): Promise<any> {
+        return await this.execute(query, variables);
     }
 
-    public async query(query: string): Promise<any> {
-        return await this.execute(query);
+    public async query(query: string, variables: string[]): Promise<any> {
+        return await this.execute(query, variables);
     }
 }
