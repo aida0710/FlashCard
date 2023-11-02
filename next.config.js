@@ -11,14 +11,7 @@ module.exports = withPWA(
     {
         reactStrictMode: true,
         images: {
-            domains: [
-                'bk-nebula.s3.ap-northeast-1.amazonaws.com',
-                'images.unsplash.com',
-                'wfiot2018.iot.ieee.org',
-            ],
-        },
-        experimental: {
-            serverActions: true,
-        },
+            domains: ['bk-nebula.s3.ap-northeast-1.amazonaws.com', 'images.unsplash.com', 'wfiot2018.iot.ieee.org',],
+        }
     }
 );
