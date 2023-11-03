@@ -1,6 +1,5 @@
 import type {NextPage} from 'next'
 import {useRouter} from 'next/router'
-import Link from "next/link";
 
 const Folder: NextPage = () => {
     const router = useRouter()
@@ -10,8 +9,12 @@ const Folder: NextPage = () => {
 
     return (
         <div>
-            <h1 className="text-lg font-bold">{folder} フォルダーを選択中...</h1>
-
+            <h1>
+                {folder}'s item
+            </h1>
+            <div>
+                welcome to {folder}'s Page
+            </div>
         </div>
     )
 }
