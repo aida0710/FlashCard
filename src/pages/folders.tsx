@@ -17,10 +17,6 @@ interface CreateFolderForm {
     folderDescription: string
 }
 
-interface ApiRequestArrayType {
-    data: SomeItemType[];
-}
-
 interface SomeItemType {
     id: string,
     user_id: string,
@@ -38,22 +34,27 @@ const schema = yup.object({
 })
 
 const Folders: NextPage = () => {
-    const [getFolders, setFolders] = React.useState<string | undefined>(undefined);
     const {isSignedIn, user, isLoaded} = useUser();
     const [isLoading, setLoading] = React.useState(false);
     const {register, handleSubmit, formState: {errors},} = useForm<CreateFolderForm>({
         resolver: yupResolver(schema),
     });
 
+    const [getFolders, setFolders] = React.useState<SomeItemType[]>([]);
+
     React.useEffect(() => {
-        getRequestFolders();
+        const responseData: any = getRequestFolders();
+        responseData.then((res: any) => {
+            if (res === undefined) return;
+            setFolders(res);
+        });
     }, []);
 
     if (!isLoaded || !isSignedIn) return <CircularProgress aria-label="読み込み中... "/>;
 
     const onSubmit: SubmitHandler<CreateFolderForm> = async (data: CreateFolderForm) => {
         setLoading(true);
-        const res = await SendApiRequest(
+        await SendApiRequest(
             ApiRequestType.SQL_INSERT,
             "/api/create_folder",
             "token",
@@ -64,6 +65,7 @@ const Folders: NextPage = () => {
             }
         )
         setLoading(false);
+        window.location.reload();
     }
 
     return (
@@ -88,26 +90,40 @@ const Folders: NextPage = () => {
                 >フォルダー作成</Button>
             </div>
             <ul>
-                {}
-                <li><Link href={"/folder/programming"}>プログラミングフォルダー</Link></li>
-                <li><Link href={"/folder/reading"}>リーディングフォルダー</Link></li>
+                {getFolders.map((folder: SomeItemType) => {
+                    return (
+                        <li key={folder.id}>
+                            <Link href={`/folder/${folder.folder_name}`}>{folder.folder_name}</Link>
+                        </li>
+                    )
+                })}
             </ul>
         </div>
     )
 
     async function getRequestFolders() {
         try {
-            let response = await SendApiRequest(
-                ApiRequestType.SQL_SELECT,
-                "/api/get_folders",
-                "token",
-                {
+            const data = await fetcha("/api/get_folders")
+                .contentType("application/json")
+                .post({
                     user_id: 'user_2XA6l4v9NGyagiqCeR9akbai1Y7'
-                }
-            );
-            if (response === undefined) return;
-            const data: ApiRequestArrayType = await response.json();
-            console.log(data[0]);
+                })
+                .then((res) => {
+                    return res.json();
+                })
+                .catch((e: FetchaError) => {
+                    switch (e.status) {
+                        case 401:
+                            alert("認証に失敗しました。");
+                            break;
+                        case 400:
+                            alert("リクエストが不正です。");
+                            break;
+                        default:
+                            alert("エラーが発生しました。");
+                    }
+                });
+            return data[0];
         } catch (error) {
             console.error('APIリクエストエラー:', error);
         }
