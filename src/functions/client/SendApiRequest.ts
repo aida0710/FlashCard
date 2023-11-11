@@ -22,7 +22,7 @@ export default async function SendApiRequest(type: ApiRequestType, url: string, 
             }
         );
         if (response.status !== 200) console.error('GETリクエストが失敗しました');
-        return await response.json();
+        return response;
     } catch (error) {
         console.error(error);
     }

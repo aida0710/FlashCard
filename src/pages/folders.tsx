@@ -17,7 +17,7 @@ interface CreateFolderForm {
     folderDescription: string
 }
 
-interface ApiResponse {
+interface ApiRequestArrayType {
     data: SomeItemType[];
 }
 
@@ -97,28 +97,17 @@ const Folders: NextPage = () => {
 
     async function getRequestFolders() {
         try {
-            const data = await fetcha("/api/get_folders")
-                .contentType("application/json")
-                .post({
+            let response = await SendApiRequest(
+                ApiRequestType.SQL_SELECT,
+                "/api/get_folders",
+                "token",
+                {
                     user_id: 'user_2XA6l4v9NGyagiqCeR9akbai1Y7'
-                })
-                .then((res) => {
-                    return res.json();
-                })
-                .catch((e: FetchaError) => {
-                    switch (e.status) {
-                        case 401:
-                            alert("認証に失敗しました。");
-                            break;
-                        case 400:
-                            alert("リクエストが不正です。");
-                            break;
-                        default:
-                            alert("エラーが発生しました。");
-                    }
-                });
+                }
+            );
+            if (response === undefined) return;
+            const data: ApiRequestArrayType = await response.json();
             console.log(data[0]);
-            data[0].map((item: SomeItemType) => console.log(item.folder_name));
         } catch (error) {
             console.error('APIリクエストエラー:', error);
         }
