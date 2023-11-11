@@ -10,10 +10,22 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Input} from "@nextui-org/input";
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup';
+import {fetcha, FetchaError} from "@co-labo-hub/fetcha";
 
 interface CreateFolderForm {
     folderName: string,
     folderDescription: string
+}
+
+interface ApiResponse {
+    data: SomeItemType[];
+}
+
+interface SomeItemType {
+    id: string,
+    user_id: string,
+    folder_name: string,
+    folder_description: string,
 }
 
 const schema = yup.object({
@@ -34,17 +46,12 @@ const Folders: NextPage = () => {
     });
 
     React.useEffect(() => {
-        getRequestFolders().then(res => {
-            if (res === undefined) return;
-            const data = JSON.parse(res);
-            setFolders(data);
-        });
-        console.log(getFolders);
+        getRequestFolders();
     }, []);
 
     if (!isLoaded || !isSignedIn) return <CircularProgress aria-label="読み込み中... "/>;
 
-    const onSubmit: SubmitHandler<CreateFolderForm> = async (data) => {
+    const onSubmit: SubmitHandler<CreateFolderForm> = async (data: CreateFolderForm) => {
         setLoading(true);
         const res = await SendApiRequest(
             ApiRequestType.SQL_INSERT,
@@ -56,7 +63,6 @@ const Folders: NextPage = () => {
                 folder_description: data.folderDescription
             }
         )
-        console.log(res);
         setLoading(false);
     }
 
@@ -90,16 +96,32 @@ const Folders: NextPage = () => {
     )
 
     async function getRequestFolders() {
-        const response = await SendApiRequest(
-            ApiRequestType.SQL_SELECT,
-            "/api/get_folders",
-            "token",
-            {
-                user_id: 'user_2XA6l4v9NGyagiqCeR9akbai1Y7'
-            }
-        );
-        if (response === undefined) return;
-        return JSON.stringify(response);
+        try {
+            const data = await fetcha("/api/get_folders")
+                .contentType("application/json")
+                .post({
+                    user_id: 'user_2XA6l4v9NGyagiqCeR9akbai1Y7'
+                })
+                .then((res) => {
+                    return res.json();
+                })
+                .catch((e: FetchaError) => {
+                    switch (e.status) {
+                        case 401:
+                            alert("認証に失敗しました。");
+                            break;
+                        case 400:
+                            alert("リクエストが不正です。");
+                            break;
+                        default:
+                            alert("エラーが発生しました。");
+                    }
+                });
+            console.log(data[0]);
+            data[0].map((item: SomeItemType) => console.log(item.folder_name));
+        } catch (error) {
+            console.error('APIリクエストエラー:', error);
+        }
     }
 }
 
