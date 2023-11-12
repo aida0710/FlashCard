@@ -2,8 +2,6 @@ import {NextPage} from "next";
 import Link from "next/link";
 import {Button} from "@nextui-org/react";
 import React from "react";
-import SendApiRequest from "@/src/functions/client/SendApiRequest";
-import ApiRequestType from "@/src/functions/client/apiRequestType";
 import {useUser} from "@clerk/nextjs";
 import {CircularProgress} from "@nextui-org/progress";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -54,16 +52,28 @@ const Folders: NextPage = () => {
 
     const onSubmit: SubmitHandler<CreateFolderForm> = async (data: CreateFolderForm) => {
         setLoading(true);
-        await SendApiRequest(
-            ApiRequestType.SQL_INSERT,
-            "/api/create_folder",
-            "token",
-            {
+        await fetcha("/api/create_folder")
+            .contentType("application/json")
+            .post({
                 user_id: user.id,
                 folder_name: data.folderName,
                 folder_description: data.folderDescription
-            }
-        )
+            })
+            .then((res) => {
+                return res.status;
+            })
+            .catch((e: FetchaError) => {
+                switch (e.status) {
+                    case 401:
+                        alert("認証に失敗しました。");
+                        break;
+                    case 400:
+                        alert("リクエストが不正です。");
+                        break;
+                    default:
+                        alert("エラーが発生しました。");
+                }
+            });
         setLoading(false);
         window.location.reload();
     }
