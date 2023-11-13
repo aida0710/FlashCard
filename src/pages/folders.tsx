@@ -8,7 +8,7 @@ import {SubmitHandler, useForm} from "react-hook-form";
 import {Input} from "@nextui-org/input";
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup';
-import {fetcha, FetchaError} from "@co-labo-hub/fetcha";
+import {fetcha} from "@co-labo-hub/fetcha";
 
 interface CreateFolderForm {
     folderName: string,
@@ -46,7 +46,7 @@ const Folders: NextPage = () => {
             if (res === undefined) return;
             setFolders(res);
         });
-    }, []);
+    }, [getFolders]);
 
     if (!isLoaded || !isSignedIn) return <CircularProgress aria-label="読み込み中... "/>;
 
@@ -60,22 +60,10 @@ const Folders: NextPage = () => {
                 folder_description: data.folderDescription
             })
             .then((res) => {
-                return res.status;
-            })
-            .catch((e: FetchaError) => {
-                switch (e.status) {
-                    case 401:
-                        alert("認証に失敗しました。");
-                        break;
-                    case 400:
-                        alert("リクエストが不正です。");
-                        break;
-                    default:
-                        alert("エラーが発生しました。");
-                }
+                alert("フォルダーを作成しました。");
             });
         setLoading(false);
-        window.location.reload();
+        await getRequestFolders();
     }
 
     return (
@@ -120,18 +108,6 @@ const Folders: NextPage = () => {
                 })
                 .then((res) => {
                     return res.json();
-                })
-                .catch((e: FetchaError) => {
-                    switch (e.status) {
-                        case 401:
-                            alert("認証に失敗しました。");
-                            break;
-                        case 400:
-                            alert("リクエストが不正です。");
-                            break;
-                        default:
-                            alert("エラーが発生しました。");
-                    }
                 });
             return data[0];
         } catch (error) {
